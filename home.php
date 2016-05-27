@@ -28,6 +28,32 @@ $userRow=mysql_fetch_array($res);
     </div>
 </div>
 
+<?php
+$sql_select = "SELECT msg, username FROM messages, users WHERE messages.uid = users.user_id";
+$result = mysql_query($sql_select);
+if(count($result) > 0)
+{
+	?>
+	<div class="table-title">
+		<h3>Bulletin Board</h3>
+	</div>
+    <table class = "table-fill">
+    <tr><th>Message</th>
+    <th>By</th>"
+    <?php
+    while($row=mysql_fetch_object($result))
+    {
+    	echo "<tr><td>".$row -> msg."</td>";
+    	echo "<td>".$row -> username."</td></tr>";
+    }
+    echo "</table>";
+}
+else
+{
+	echo "No message here ! be the first !";
+}
+?>
+
 <form action="home.php" method="POST">
     <input type="hidden" name="submit" value="1" />
     <textarea name="message" id = 'msg'></textarea><br />
