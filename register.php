@@ -17,6 +17,7 @@ if(isset($_POST['btn-signup']))
   ?>
         <script>alert('successfully registered ');</script>
         <?php
+        header("Location: index.php");
  }
  else
  {
@@ -35,6 +36,11 @@ if(isset($_POST['btn-signup']))
 
 </head>
 <body>
+  <div id="header">
+ <div id="left">
+    <label>410221009 DBMS final project</label>
+    </div>
+  </div>
 <center>
 <div id="login-form">
 <form method="post">

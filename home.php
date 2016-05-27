@@ -17,15 +17,42 @@ $userRow=mysql_fetch_array($res);
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
-<div id="header">
+  <div id="header">
  <div id="left">
-    <label>cleartuts</label>
+    <label>410221009 DBMS final project</label>
     </div>
     <div id="right">
      <div id="content">
-         hi' <?php echo $userRow['username']; ?>&nbsp;<a href="logout.php?logout">Sign Out</a>
+         hi' <?php echo $userRow['username'];?>&nbsp;<a href="logout.php?logout">Sign Out</a>
         </div>
     </div>
 </div>
+
+<form action="home.php" method="POST">
+    <input type="hidden" name="submit" value="1" />
+    <textarea name="message" id = 'msg'></textarea><br />
+    <input type="submit" id ='msg_submit' value="Submit message!" />
+</form>
+
+<?php
+if(isset($_POST['submit']))
+{
+ $uid = $userRow['user_id'];
+ $msg = mysql_real_escape_string($_POST[message]);
+ 
+ if(mysql_query("INSERT INTO messages(msg,uid) VALUES('$msg','$uid')"))
+ {
+  ?>
+        <script>alert('successfully sent message');</script>
+        <?php
+ }
+ else
+ {
+  ?>
+        <script>alert('error while sending message');</script>
+        <?php
+ }
+}
+?>
 </body>
 </html>

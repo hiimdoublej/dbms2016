@@ -34,6 +34,11 @@ if(isset($_POST['btn-login']))
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
+  <div id="header">
+ <div id="left">
+    <label>410221009 DBMS final project</label>
+    </div>
+  </div>
 <center>
 <div id="login-form">
 <form method="post">
