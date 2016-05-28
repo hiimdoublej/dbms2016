@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once 'dbconnect.php';
+date_default_timezone_set("Asia/Taipei");
 
 if(!isset($_SESSION['user']))
 {
@@ -29,7 +30,7 @@ $userRow=mysql_fetch_array($res);
 </div>
 
 <?php
-$sql_select = "SELECT msg, username FROM messages, users WHERE messages.uid = users.user_id";
+$sql_select = "SELECT msg, username,msg_time FROM messages, users WHERE messages.uid = users.user_id";
 $result = mysql_query($sql_select);
 if(count($result) > 0)
 {
@@ -39,12 +40,14 @@ if(count($result) > 0)
 	</div>
     <table class = "table-fill">
     <tr><th>Message</th>
-    <th>By</th>"
+    <th>By</th>
+    <th>Time</th>
     <?php
     while($row=mysql_fetch_object($result))
     {
     	echo "<tr><td>".$row -> msg."</td>";
-    	echo "<td>".$row -> username."</td></tr>";
+        echo "<td>".$row -> username."</td>";
+    	echo "<td>".$row -> msg_time."</td></tr>";
     }
     echo "</table>";
 }
@@ -65,8 +68,9 @@ if(isset($_POST['submit']))
 {
  $uid = $userRow['user_id'];
  $msg = mysql_real_escape_string($_POST[message]);
+ $time = date('Y/m/d H:i:s');
  
- if(mysql_query("INSERT INTO messages(msg,uid) VALUES('$msg','$uid')"))
+ if(mysql_query("INSERT INTO messages(msg,uid,msg_time) VALUES('$msg','$uid','$time')"))
  {
   ?>
         <script>alert('successfully sent message');</script>

@@ -164,7 +164,7 @@ div.table-title {
   border-collapse: collapse;
   height: 320px;
   margin-left:40px;
-  max-width: 600px;
+  max-width: 1000px;
   padding:5px;
   width: 100%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
