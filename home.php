@@ -75,6 +75,7 @@ if(isset($_POST['submit']))
   ?>
         <script>alert('successfully sent message');</script>
         <?php
+         echo "<meta http-equiv='refresh' content='0'>";
  }
  else
  {

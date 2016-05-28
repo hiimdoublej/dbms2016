@@ -110,7 +110,7 @@ table tr td a
 textarea#msg{
 	margin-top:40px;
 	margin-left:40px;
-	width: 600px;
+	width: 70%;
 	height: 120px;
 	border: 3px solid #cccccc;
 	padding: 5px;
@@ -164,9 +164,8 @@ div.table-title {
   border-collapse: collapse;
   height: 320px;
   margin-left:40px;
-  max-width: 1000px;
+  width: 70%;
   padding:5px;
-  width: 100%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
 }
@@ -243,6 +242,8 @@ td {
   font-size:18px;
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
+  word-break:break-all;
+  max-width: 60px;
 }
 
 td:last-child {
