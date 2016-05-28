@@ -7,8 +7,21 @@ if(!isset($_SESSION['user']))
 {
  header("Location: index.php");
 }
+
+
 $res=mysql_query("SELECT * FROM users WHERE user_id=".$_SESSION['user']);
 $userRow=mysql_fetch_array($res);
+
+if($_REQUEST["action"]=="deleteMessage")
+{
+    $target = mysql_query("SELECT uid FROM messages WHERE msg_id =".$_REQUEST["msgid"]);
+    $target_obj = mysql_fetch_object($target);
+    if($_SESSION['user']==$target_obj->uid)
+    {
+        echo "deletion is valid";
+    }
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,7 +43,10 @@ $userRow=mysql_fetch_array($res);
 </div>
 
 <?php
-$sql_select = "SELECT msg, username,msg_time FROM messages, users WHERE messages.uid = users.user_id";
+$sql_select =   "SELECT msg_id,msg, username,msg_time,uid 
+                FROM messages, users 
+                WHERE messages.uid = users.user_id
+                ORDER BY `messages`.`msg_time` DESC";
 $result = mysql_query($sql_select);
 if(count($result) > 0)
 {
@@ -42,12 +58,30 @@ if(count($result) > 0)
     <tr><th>Message</th>
     <th>By</th>
     <th>Time</th>
+    <th>Delete ?</th>
     <?php
     while($row=mysql_fetch_object($result))
     {
     	echo "<tr><td>".$row -> msg."</td>";
         echo "<td>".$row -> username."</td>";
-    	echo "<td>".$row -> msg_time."</td></tr>";
+    	echo "<td>".$row -> msg_time."</td>";
+        if($userRow['user_id']==$row->uid)
+        {
+            ?>
+            <td>
+                <?php
+                echo "<a href = home.php?action=deleteMessage&msgid=".$row->msg_id.">";
+                ?>
+                <img src="icons/delete.png" style="width:30px;height:30px;" class = "invert" title = "Delete This Message" >
+                </a>
+            </td>
+        </tr>
+            <?php
+        }
+        else 
+        {
+            echo "<td></td></tr>";
+        }
     }
     echo "</table>";
 }

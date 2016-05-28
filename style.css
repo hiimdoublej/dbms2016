@@ -243,7 +243,7 @@ td {
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
   word-break:break-all;
-  max-width: 60px;
+  max-width: 70px;
 }
 
 td:last-child {
@@ -272,4 +272,11 @@ td.text-center {
 
 td.text-right {
   text-align: right;
+}
+img.invert:hover {  
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+    -moz-filter: invert(100%);
+    -o-filter: invert(100%);
+    -ms-filter: invert(100%);
 }
