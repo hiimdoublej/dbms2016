@@ -1,10 +1,11 @@
 <?php
-if(!mysql_connect("localhost","root","Ladiesman41&"))
-{
-     die('oops connection problem ! --> '.mysql_error());
+$user = "root";
+$pwd = "Ladiesman41&";
+try {
+    $conn = new PDO( "mysql:dbname=dbtest;host=127.0.0.1", $user, $pwd);
+    $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 }
-if(!mysql_select_db("dbtest"))
-{
-     die('oops database selection problem ! --> '.mysql_error());
+catch(Exception $e){
+    die(var_dump($e));
 }
 ?>

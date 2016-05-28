@@ -8,18 +8,32 @@ if(!isset($_SESSION['user']))
  header("Location: index.php");
 }
 
+$sql_select = "SELECT * FROM users WHERE user_id=".$_SESSION['user'];
+$res=$conn->query($sql_select);
+$userRow=$res->fetch(PDO::FETCH_BOTH);
 
-$res=mysql_query("SELECT * FROM users WHERE user_id=".$_SESSION['user']);
-$userRow=mysql_fetch_array($res);
-
-if($_REQUEST["action"]=="deleteMessage")
+if(isset($_POST["delete_action"]))
 {
-    $target = mysql_query("SELECT uid FROM messages WHERE msg_id =".$_REQUEST["msgid"]);
-    $target_obj = mysql_fetch_object($target);
+if($_POST["delete_action"]=="delete")
+{
+    $sql_select = "SELECT uid FROM messages WHERE msg_id =".$_POST["del_msg_id"];
+    $target = $conn->query($sql_select);
+    $target_obj = $target->fetch(PDO::FETCH_OBJ);
     if($_SESSION['user']==$target_obj->uid)
     {
-        echo "deletion is valid";
+        $sql_del = "DELETE FROM messages WHERE messages.msg_id = ?";
+        $stmt = $conn->prepare($sql_del);
+        $stmt->bindValue(1,$_POST["del_msg_id"]);
+        $stmt->execute();
+        ?>
+        <script>alert('message deleted');</script>
+        <?php
     }
+    else
+    {
+        echo "Error when deleting message.....";
+    }
+}
 }
 
 ?>
@@ -47,7 +61,7 @@ $sql_select =   "SELECT msg_id,msg, username,msg_time,uid
                 FROM messages, users 
                 WHERE messages.uid = users.user_id
                 ORDER BY `messages`.`msg_time` DESC";
-$result = mysql_query($sql_select);
+$result = $conn->query($sql_select);
 if(count($result) > 0)
 {
 	?>
@@ -58,9 +72,9 @@ if(count($result) > 0)
     <tr><th>Message</th>
     <th>By</th>
     <th>Time</th>
-    <th>Delete ?</th>
+    <th>Actions</th>
     <?php
-    while($row=mysql_fetch_object($result))
+    while($row=$result->fetch(PDO::FETCH_OBJ))
     {
     	echo "<tr><td>".$row -> msg."</td>";
         echo "<td>".$row -> username."</td>";
@@ -69,10 +83,14 @@ if(count($result) > 0)
         {
             ?>
             <td>
+               <form action="home.php" method="POST" >
+                <button type="submit" id="del_btn" name="delete_action" value ="delete" 
+                style="border:0;background transparent;"/>
+                <img style ="width:30px;height:30px;"src="icons/delete.png" class = "invert" title = "Delete This Message" alt="submit" />
                 <?php
-                echo "<a href = home.php?action=deleteMessage&msgid=".$row->msg_id.">";
+                echo "<input type='hidden' name='del_msg_id' value=".$row->msg_id.">"
                 ?>
-                <img src="icons/delete.png" style="width:30px;height:30px;" class = "invert" title = "Delete This Message" >
+                </form>
                 </a>
             </td>
         </tr>
@@ -100,22 +118,25 @@ else
 <?php
 if(isset($_POST['submit']))
 {
- $uid = $userRow['user_id'];
- $msg = mysql_real_escape_string($_POST[message]);
- $time = date('Y/m/d H:i:s');
- 
- if(mysql_query("INSERT INTO messages(msg,uid,msg_time) VALUES('$msg','$uid','$time')"))
+ try
  {
-  ?>
+     $uid = $userRow['user_id'];
+     $msg = $_POST['message'];
+     $time = date('Y/m/d H:i:s');
+     $insert = "INSERT INTO messages(msg,uid,msg_time) VALUES(?,?,?)";
+     $stmt = $conn->prepare($insert);
+     $stmt->bindValue(1,$msg);
+     $stmt->bindValue(2,$uid);
+     $stmt->bindValue(3,$time);
+     $stmt->execute();
+      ?>
         <script>alert('successfully sent message');</script>
         <?php
          echo "<meta http-equiv='refresh' content='0'>";
  }
- else
+ catch(Exception $e)
  {
-  ?>
-        <script>alert('error while sending message');</script>
-        <?php
+    die(var_dump($e));
  }
 }
 ?>

@@ -8,10 +8,11 @@ if(isset($_SESSION['user'])!="")
 }
 if(isset($_POST['btn-login']))
 {
- $email = mysql_real_escape_string($_POST['email']);
- $upass = mysql_real_escape_string($_POST['pass']);
- $res=mysql_query("SELECT * FROM users WHERE email='$email'");
- $row=mysql_fetch_array($res);
+ $email = $conn->quote($_POST['email']);
+ $upass = $conn->quote($_POST['pass']);
+ $sql = "SELECT * FROM users WHERE email=$email";
+ $res=$conn->query($sql);
+ $row=$res->fetch(PDO::FETCH_BOTH);
  if($row['password']==md5($upass))
  {
   	$_SESSION['user'] = $row['user_id'];
@@ -50,7 +51,7 @@ if(isset($_POST['btn-login']))
 <td><input type="password" name="pass" placeholder="Your Password" required /></td>
 </tr>
 <tr>
-<td><button type="submit" name="btn-login">Sign In</button></td>
+<td><button type="submit" name="btn-login" id ="login">Sign In</button></td>
 </tr>
 <tr>
 <td><a href="register.php">Sign Up Here</a></td>

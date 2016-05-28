@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 if(isset($_SESSION['user'])!="")
 {
@@ -8,13 +9,14 @@ include_once 'dbconnect.php';
 
 if(isset($_POST['btn-signup']))
 {
- $uname = mysql_real_escape_string($_POST['uname']);
- $email = mysql_real_escape_string($_POST['email']);
- $upass = md5(mysql_real_escape_string($_POST['pass']));
- 
- if(mysql_query("INSERT INTO users(username,email,password) VALUES('$uname','$email','$upass')"))
+ $uname = $conn->quote($_POST['uname']);
+ $email = $conn->quote($_POST['email']);
+ $upass = $conn->quote(md5($_POST['pass']));
+ $sql = "INSERT INTO users (username,email,password) VALUES($uname,$email,$upass)";
+ $stmt = $conn->query($sql);
+ if($stmt)
  {
-  ?>
+        ?>
         <script>alert('successfully registered ');</script>
         <?php
         header("Location: index.php");
