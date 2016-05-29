@@ -57,7 +57,7 @@ if(isset($_POST['btn-signup']))
 <td><input type="password" name="pass" placeholder="Your Password" required /></td>
 </tr>
 <tr>
-<td><button type="submit" name="btn-signup">Sign Me Up</button></td>
+<td><button type="submit" name="btn-signup" id ="signup">Sign Me Up</button></td>
 </tr>
 <tr>
 <td><a href="index.php">Sign In Here</a></td>

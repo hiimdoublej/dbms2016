@@ -55,6 +55,17 @@ if($_POST["delete_action"]=="delete")
         </div>
     </div>
 </div>
+<div class="table-title">
+        <h3>Bulletin Board</h3>
+</div>
+
+<form action="search.php" method="POST">
+    <input type="hidden" name="search_submit" value="1" />
+    <textarea name="message_target" id = 'msg_search_box'></textarea>
+        <button type="submit" id ='msg_search'>Search for message</button>
+    <br />
+</form>
+
 
 <?php
 $sql_select =   "SELECT msg_id,msg, username,msg_time,uid 
@@ -65,14 +76,11 @@ $result = $conn->query($sql_select);
 if(count($result) > 0)
 {
 	?>
-	<div class="table-title">
-		<h3>Bulletin Board</h3>
-	</div>
     <table class = "table-fill">
     <tr><th>Message</th>
     <th>By</th>
     <th>Time</th>
-    <th id="actions">Actions</th>
+    <th id="actions">Delete</th>
     <?php
     while($row=$result->fetch(PDO::FETCH_OBJ))
     {
@@ -85,7 +93,8 @@ if(count($result) > 0)
             <td id="actions">
                <form action="home.php" method="POST" >
                 <button type="submit" id="del_btn" name="delete_action" value ="delete" 
-                style="border:0;background transparent;"/>
+                style="border:0;background transparent;" 
+                onclick="return confirm('Delete this message?')"/>
                 <img style ="width:30px;height:30px;"src="icons/delete.png" class = "invert" title = "Delete This Message" alt="submit" />
                 <?php
                 echo "<input type='hidden' name='del_msg_id' value=".$row->msg_id.">"
@@ -112,7 +121,7 @@ else
 <form action="home.php" method="POST">
     <input type="hidden" name="submit" value="1" />
     <textarea name="message" id = 'msg'></textarea><br />
-    <input type="submit" id ='msg_submit' value="Submit message!" />
+    <button type="submit" id ='msg_submit'>Submit message</button>
 </form>
 
 <?php
