@@ -8,14 +8,20 @@ if(isset($_SESSION['user'])!="")
 }
 if(isset($_POST['btn-login']))
 {
+	var_dump($_POST);
  $email = $conn->quote($_POST['email']);
- $upass = $conn->quote($_POST['pass']);
+ $upass = md5($_POST['pass']);
  $sql = "SELECT * FROM users WHERE email=$email";
  $res=$conn->query($sql);
  $row=$res->fetch(PDO::FETCH_BOTH);
- if($row['password']==md5($upass))
+  	var_dump($row);
+ 	var_dump($upass);
+ if($row['password']==$upass)
  {
   	$_SESSION['user'] = $row['user_id'];
+  	?>
+  	<script>alert('Login successful');</script>
+  	<?php
   	header("Location:home.php");
  }
  else
