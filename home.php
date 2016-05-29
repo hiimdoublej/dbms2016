@@ -72,7 +72,7 @@ if(count($result) > 0)
     <tr><th>Message</th>
     <th>By</th>
     <th>Time</th>
-    <th>Actions</th>
+    <th id="actions">Actions</th>
     <?php
     while($row=$result->fetch(PDO::FETCH_OBJ))
     {
@@ -82,7 +82,7 @@ if(count($result) > 0)
         if($userRow['user_id']==$row->uid)
         {
             ?>
-            <td>
+            <td id="actions">
                <form action="home.php" method="POST" >
                 <button type="submit" id="del_btn" name="delete_action" value ="delete" 
                 style="border:0;background transparent;"/>
