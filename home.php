@@ -1,8 +1,5 @@
 <?php
-session_start();
-include_once 'dbconnect.php';
-date_default_timezone_set("Asia/Taipei");
-
+include_once 'header.php';
 if(!isset($_SESSION['user']))
 {
  header("Location: index.php");
@@ -12,7 +9,7 @@ $sql_select = "SELECT * FROM users WHERE user_id=".$_SESSION['user'];
 $res=$conn->query($sql_select);
 $userRow=$res->fetch(PDO::FETCH_BOTH);
 
-if(isset($_POST["delete_action"]))
+if(isset($_POST["delete_action"]))//deleting message part
 {
 if($_POST["delete_action"]=="delete")
 {
@@ -25,9 +22,6 @@ if($_POST["delete_action"]=="delete")
         $stmt = $conn->prepare($sql_del);
         $stmt->bindValue(1,$_POST["del_msg_id"]);
         $stmt->execute();
-        ?>
-        <script>alert('message deleted');</script>
-        <?php
     }
     else
     {
@@ -37,24 +31,6 @@ if($_POST["delete_action"]=="delete")
 }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Welcome - <?php echo $userRow['email']; ?></title>
-<link rel="stylesheet" href="style.css" type="text/css" />
-</head>
-<body>
-  <div id="header">
- <div id="left">
-    <label>410221009 DBMS final project</label>
-    </div>
-    <div id="right">
-     <div id="content">
-         hi' <?php echo $userRow['username'];?>&nbsp;<a href="logout.php?logout">Sign Out</a>
-        </div>
-    </div>
-</div>
 <div class="table-title">
         <h3>Bulletin Board</h3>
 </div>
@@ -81,6 +57,7 @@ if(count($result) > 0)
     <th>By</th>
     <th>Time</th>
     <th id="actions">Delete</th>
+    <th>Replies</th>
     <?php
     while($row=$result->fetch(PDO::FETCH_OBJ))
     {
@@ -95,20 +72,43 @@ if(count($result) > 0)
                 <button type="submit" id="del_btn" name="delete_action" value ="delete" 
                 style="border:0;background transparent;" 
                 onclick="return confirm('Delete this message?')"/>
-                <img style ="width:30px;height:30px;"src="icons/delete.png" class = "invert" title = "Delete This Message" alt="submit" />
+                <img style ="width:30px;height:30px;"src="delete.png" class = "invert" title = "Delete This Message" alt="submit" />
                 <?php
                 echo "<input type='hidden' name='del_msg_id' value=".$row->msg_id.">"
                 ?>
                 </form>
                 </a>
             </td>
-        </tr>
             <?php
         }
         else 
         {
-            echo "<td></td></tr>";
+            echo "<td></td>";
         }
+        $sql_count =   "SELECT COUNT(cmt)
+                FROM comments 
+                INNER JOIN messages ON comments.parent_id = $row->msg_id AND msg_id = comments.parent_id
+                INNER JOIN users ON users.user_id=messages.uid
+                ORDER BY cmt_time DESC ";
+                $num_of_replies = $conn->query($sql_count);
+                $num_result = $num_of_replies->fetch(PDO::FETCH_NUM)[0];
+                if($num_result%2==1|$num_result==0)
+                {
+                    echo "<td id='actions'>";
+                    echo "<form action='comment.php' method='POST'>";
+                    echo "<button type='submit' id='view_replies' name='view_reply_parent' 
+                    value=".$row->msg_id.">".$num_result." reply</button>";
+                    echo "</form></td></tr>";
+                }
+                else
+                {
+                    echo "<td id='actions'>";
+                    echo "<form action='comment.php' method='POST'>";
+                    echo "<button type='submit' id='view_replies' name='view_reply_parent' 
+                    value=".$row->msg_id.">".$num_result." replies</button>";
+                    echo "</form></td></tr>";
+                }
+
     }
     echo "</table>";
 }
@@ -141,7 +141,7 @@ if(isset($_POST['submit']))
       ?>
         <script>alert('successfully sent message');</script>
         <?php
-         echo "<meta http-equiv='refresh' content='0'>";
+         echo "<meta http-equiv='refresh' content='0'>";//refresh the page
  }
  catch(Exception $e)
  {
