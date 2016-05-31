@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Taipei");
 include_once 'header.php';
 if(!isset($_SESSION['user']))
 {
@@ -127,26 +128,33 @@ else
 <?php
 if(isset($_POST['submit']))
 {
- try
- {
-     $uid = $userRow['user_id'];
-     $msg = $_POST['message'];
-     $time = date('Y/m/d H:i:s');
-     $insert = "INSERT INTO messages(msg,uid,msg_time) VALUES(?,?,?)";
-     $stmt = $conn->prepare($insert);
-     $stmt->bindValue(1,$msg);
-     $stmt->bindValue(2,$uid);
-     $stmt->bindValue(3,$time);
-     $stmt->execute();
-      ?>
+    if($_POST['message']!='')
+     try
+     {
+        $uid = $userRow['user_id'];
+        $msg = $_POST['message'];
+        $time = date('Y/m/d H:i:s');
+        $insert = "INSERT INTO messages(msg,uid,msg_time) VALUES(?,?,?)";
+        $stmt = $conn->prepare($insert);
+        $stmt->bindValue(1,$msg);
+        $stmt->bindValue(2,$uid);
+        $stmt->bindValue(3,$time);
+        $stmt->execute();
+        ?>
         <script>alert('successfully sent message');</script>
         <?php
-         echo "<meta http-equiv='refresh' content='0'>";//refresh the page
- }
- catch(Exception $e)
- {
-    die(var_dump($e));
- }
+        echo "<meta http-equiv='refresh' content='0'>";//refresh the page
+     }
+     catch(Exception $e)
+     {
+        die(var_dump($e));
+     }
+    else
+    {
+        ?>
+        <script>alert('Please check your input !');</script>
+        <?php
+    }
 }
 ?>
 </body>

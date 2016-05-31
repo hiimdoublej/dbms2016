@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Taipei");
 session_start();
 include_once 'dbconnect.php';
 
@@ -43,7 +44,13 @@ if(isset($_POST['btn-login']))
  <div id="left">
     <label>410221009 DBMS final project</label>
     </div>
+        <div id ="right">
+          <div id = "content">
+    <a href="https://github.com/hiimdoublej/dbms2016">Github</a>
+    </div>
   </div>
+  </div>
+</div>
 <center>
 <div id="login-form">
 <form method="post">

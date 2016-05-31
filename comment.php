@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Taipei");
 include_once 'header.php';
 echo "<br>";
 if(isset($_POST['view_reply_parent']))
@@ -8,27 +9,36 @@ $_SESSION['view_reply_parent'] = $_POST['view_reply_parent'];
 $parent_id = $_SESSION['view_reply_parent'];
 if(isset($_POST['submit_comment']))
 {
- try
- {
-     $uid = $_SESSION['user'];
-     $msg = $_POST['comment'];
-     $time = date('Y/m/d H:i:s');
-     $insert = "INSERT INTO comments(cmt,uid,cmt_time,parent_id) VALUES(?,?,?,?)";
-     $stmt = $conn->prepare($insert);
-     $stmt->bindValue(1,$msg);
-     $stmt->bindValue(2,$uid);
-     $stmt->bindValue(3,$time);
-     $stmt->bindValue(4,$parent_id);
-     $stmt->execute();
-      ?>
-        <script>alert('successfully sent reply');</script>
+    if($_POST['comment']!='')
+    {
+        try
+        {
+           $uid = $_SESSION['user'];
+           $msg = $_POST['comment'];
+           $time = date('Y/m/d H:i:s');
+           $insert = "INSERT INTO comments(cmt,uid,cmt_time,parent_id) VALUES(?,?,?,?)";
+           $stmt = $conn->prepare($insert);
+           $stmt->bindValue(1,$msg);
+           $stmt->bindValue(2,$uid);
+           $stmt->bindValue(3,$time);
+           $stmt->bindValue(4,$parent_id);
+           $stmt->execute();
+           ?>
+           <script>alert('successfully sent reply');</script>
+           <?php
+           echo "<meta http-equiv='refresh' content='0'>";//refresh the page
+        }
+        catch(Exception $e)
+        {
+           die(var_dump($e));
+        }
+    }
+    else 
+    {
+        ?>
+        <script>alert('Please check your input !');</script>
         <?php
-         echo "<meta http-equiv='refresh' content='0'>";//refresh the page
- }
- catch(Exception $e)
- {
-    die(var_dump($e));
- }
+    }
 }
 
 //display the parent message
