@@ -226,7 +226,7 @@ div.table-title {
   border-radius:3px;
   border-collapse: collapse;
   margin-left:40px;
-  width: 70%;
+  max-width: 70%;
   padding:5px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
@@ -244,9 +244,21 @@ th {
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align:middle;
 }
+th#text
+{
+  width:200em;
+}
+th#name
+{
+  width:40em;
+}
+th#time
+{
+  width:65em;
+}
 th#actions
 {
-max-width:10px;
+max-width:10em;
 }
 
 th:first-child {

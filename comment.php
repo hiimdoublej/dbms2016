@@ -49,9 +49,9 @@ $res=$conn->prepare($sql_select);
 $res->execute();
 ?>
     <table class = "table-fill">
-    <tr><th>Message</th>
-    <th>By</th>
-    <th>Time</th>
+    <tr><th id = "text">Message</th>
+    <th id = "name">By</th>
+    <th id = "time">Time</th>
     <?php
     while($row=$res->fetch(PDO::FETCH_OBJ))
     {
@@ -75,9 +75,9 @@ if($res->rowCount()!=0)
 {
 ?>
     <table class = "table-fill">
-    <tr><th>Replies</th>
-    <th>By</th>
-    <th>Time</th>
+    <tr><th id="text">Replies</th>
+    <th id="name">By</th>
+    <th id="time">Time</th>
     <?php
     while($row=$res->fetch(PDO::FETCH_OBJ))
     {
