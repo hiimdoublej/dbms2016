@@ -158,6 +158,8 @@ font-size:25px;
 font-weight:bolder;
 text-transform:uppercase;
 margin-left: 40px;
+margin-bottom: 40px;
+margin-top: 10px;
 }
 button#msg_search{
   border: 2px solid #fafafa;
@@ -226,7 +228,7 @@ div.table-title {
   border-radius:3px;
   border-collapse: collapse;
   margin-left:40px;
-  max-width: 70%;
+  margin-right:40px;
   padding:5px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
@@ -258,7 +260,11 @@ th#time
 }
 th#actions
 {
-max-width:10em;
+
+}
+th#replies
+{
+width:16em;
 }
 
 th:first-child {

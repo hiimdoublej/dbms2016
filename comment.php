@@ -1,10 +1,57 @@
 <?php
 date_default_timezone_set("Asia/Taipei");
 include_once 'header.php';
+if(isset($_POST["delete_msg"]))//deleting message part
+{
+    if($_POST["delete_msg"]=="delete")
+    {
+        $sql_select = "SELECT uid FROM messages WHERE msg_id =".$_POST["del_msg_id"];
+        $target = $conn->query($sql_select);
+        $target_obj = $target->fetch(PDO::FETCH_OBJ);
+        if($_SESSION['user']==$target_obj->uid)
+        {
+            $sql_del = "DELETE FROM messages WHERE messages.msg_id = ?";
+            $stmt = $conn->prepare($sql_del);
+            $stmt->bindValue(1,$_POST["del_msg_id"]);
+            $stmt->execute();
+            ?>
+            <script>alert('Message deleted !');</script>
+            <?php
+            header("Location: home.php");
+        }
+        else
+        {
+            echo "Error when deleting message.....";
+        }
+    }
+}
+if(isset($_POST["delete_cmt"]))//deleting comments/replies part
+{
+    if($_POST["delete_cmt"]=="delete")
+    {
+        $sql_select = "SELECT uid FROM comments WHERE cmt_id =".$_POST["del_msg_id"];
+        $target = $conn->query($sql_select);
+        $target_obj = $target->fetch(PDO::FETCH_OBJ);
+        if($_SESSION['user']==$target_obj->uid)
+        {
+            $sql_del = "DELETE FROM comments WHERE cmt_id = ?";
+            $stmt = $conn->prepare($sql_del);
+            $stmt->bindValue(1,$_POST["del_msg_id"]);
+            $stmt->execute();
+            ?>
+            <script>alert('Reply deleted !');</script>
+            <?php
+        }
+        else
+        {
+            echo "Error when deleting message.....";
+        }
+    }
+}
 echo "<br>";
 if(isset($_POST['view_reply_parent']))
 {
-$_SESSION['view_reply_parent'] = $_POST['view_reply_parent'];
+  $_SESSION['view_reply_parent'] = $_POST['view_reply_parent'];
 }
 $parent_id = $_SESSION['view_reply_parent'];
 if(isset($_POST['submit_comment']))
@@ -52,19 +99,41 @@ $res->execute();
     <tr><th id = "text">Message</th>
     <th id = "name">By</th>
     <th id = "time">Time</th>
+    <th id="actions">Delete</th>
     <?php
     while($row=$res->fetch(PDO::FETCH_OBJ))
     {
         echo "<tr><td>".$row -> msg."</td>";
         echo "<td>".$row -> username."</td>";
         echo "<td>".$row -> msg_time."</td>";
+        if($_SESSION['user']==$row->uid)
+        {
+            ?>
+            <td id="actions">
+               <form action="comment.php" method="POST" >
+                <button type="submit" id="del_btn" name="delete_msg" value ="delete" 
+                style="border:0;background transparent;" 
+                onclick="return confirm('Delete this message?')"/>
+                <img style ="width:30px;height:30px;"src="delete.png" class = "invert" title = "Delete This Message" alt="submit" />
+                <?php
+                echo "<input type='hidden' name='del_msg_id' value=".$row->msg_id.">"
+                ?>
+                </form>
+                </a>
+            </td>
+            <?php
+        }
+        else 
+        {
+            echo "<td></td>";
+        }
         echo "</tr>";
     }
     echo "</table><br>";
 
 //display the replys to that message
 
-$sql_select =   "SELECT cmt,cmt_id,username,cmt_time 
+$sql_select =   "SELECT cmt,cmt_id,username,cmt_time,comments.uid 
                 FROM comments 
                 INNER JOIN messages ON $parent_id=comments.parent_id AND parent_id = messages.msg_id
                 INNER JOIN users ON users.user_id = comments.uid 
@@ -78,12 +147,34 @@ if($res->rowCount()!=0)
     <tr><th id="text">Replies</th>
     <th id="name">By</th>
     <th id="time">Time</th>
+    <th id="actions">Delete</th>
     <?php
     while($row=$res->fetch(PDO::FETCH_OBJ))
     {
         echo "<tr><td>".$row -> cmt."</td>";
         echo "<td>".$row -> username."</td>";
         echo "<td>".$row -> cmt_time."</td>";
+        if($_SESSION['user']==$row->uid)
+        {
+            ?>
+            <td id="actions">
+               <form action="comment.php" method="POST" >
+                <button type="submit" id="del_btn" name="delete_cmt" value ="delete" 
+                style="border:0;background transparent;" 
+                onclick="return confirm('Delete this reply?')"/>
+                <img style ="width:30px;height:30px;"src="delete.png" class = "invert" title = "Delete This Message" alt="submit" />
+                <?php
+                echo "<input type='hidden' name='del_msg_id' value=".$row->cmt_id.">"
+                ?>
+                </form>
+                </a>
+            </td>
+            <?php
+        }
+        else 
+        {
+            echo "<td></td>";
+        }
         echo "</tr>";
     }
     echo "</table>";

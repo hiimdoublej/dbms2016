@@ -12,23 +12,23 @@ $userRow=$res->fetch(PDO::FETCH_BOTH);
 
 if(isset($_POST["delete_action"]))//deleting message part
 {
-if($_POST["delete_action"]=="delete")
-{
-    $sql_select = "SELECT uid FROM messages WHERE msg_id =".$_POST["del_msg_id"];
-    $target = $conn->query($sql_select);
-    $target_obj = $target->fetch(PDO::FETCH_OBJ);
-    if($_SESSION['user']==$target_obj->uid)
+    if($_POST["delete_action"]=="delete")
     {
-        $sql_del = "DELETE FROM messages WHERE messages.msg_id = ?";
-        $stmt = $conn->prepare($sql_del);
-        $stmt->bindValue(1,$_POST["del_msg_id"]);
-        $stmt->execute();
+        $sql_select = "SELECT uid FROM messages WHERE msg_id =".$_POST["del_msg_id"];
+        $target = $conn->query($sql_select);
+        $target_obj = $target->fetch(PDO::FETCH_OBJ);
+        if($_SESSION['user']==$target_obj->uid)
+        {
+            $sql_del = "DELETE FROM messages WHERE messages.msg_id = ?";
+            $stmt = $conn->prepare($sql_del);
+            $stmt->bindValue(1,$_POST["del_msg_id"]);
+            $stmt->execute();
+        }
+        else
+        {
+            echo "Error when deleting message.....";
+        }
     }
-    else
-    {
-        echo "Error when deleting message.....";
-    }
-}
 }
 
 ?>
@@ -54,11 +54,11 @@ if(count($result) > 0)
 {
 	?>
     <table class = "table-fill">
-    <tr><th>Message</th>
-    <th>By</th>
-    <th>Time</th>
+    <tr><th id="text">Message</th>
+    <th id="name">By</th>
+    <th id="time">Time</th>
     <th id="actions">Delete</th>
-    <th>Replies</th>
+    <th id="replies">Replies</th>
     <?php
     while($row=$result->fetch(PDO::FETCH_OBJ))
     {
