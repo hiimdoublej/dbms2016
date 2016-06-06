@@ -93,20 +93,20 @@ if(count($result) > 0)
                 ORDER BY cmt_time DESC ";
                 $num_of_replies = $conn->query($sql_count);
                 $num_result = $num_of_replies->fetch(PDO::FETCH_NUM)[0];
-                if($num_result%2==1|$num_result==0)
+                if($num_result<2)
                 {
                     echo "<td id='actions'>";
-                    echo "<form action='comment.php' method='POST'>";
-                    echo "<button type='submit' id='view_replies' name='view_reply_parent' 
-                    value=".$row->msg_id.">".$num_result." reply</button>";
+                    echo "<form action='comment.php' method='GET'>";
+                    echo "<button type='submit' id='view_replies' name='m_id' 
+                    value='".$row->msg_id."'>$num_result reply</button>";
                     echo "</form></td></tr>";
                 }
                 else
                 {
                     echo "<td id='actions'>";
-                    echo "<form action='comment.php' method='POST'>";
-                    echo "<button type='submit' id='view_replies' name='view_reply_parent' 
-                    value=".$row->msg_id.">".$num_result." replies</button>";
+                    echo "<form action='comment.php' method='GET'>";
+                    echo "<button type='submit' id='view_replies' name='m_id' 
+                    value='".$row->msg_id."'>$num_result replies</button>";
                     echo "</form></td></tr>";
                 }
 

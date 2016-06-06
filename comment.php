@@ -49,11 +49,8 @@ if(isset($_POST["delete_cmt"]))//deleting comments/replies part
     }
 }
 echo "<br>";
-if(isset($_POST['view_reply_parent']))
-{
-  $_SESSION['view_reply_parent'] = $_POST['view_reply_parent'];
-}
-$parent_id = $_SESSION['view_reply_parent'];
+
+$parent_id = $_GET["m_id"];
 if(isset($_POST['submit_comment']))
 {
     if($_POST['comment']!='')
@@ -91,7 +88,7 @@ if(isset($_POST['submit_comment']))
 //display the parent message
 $sql_select =   "SELECT msg_id,msg, username,msg_time,uid 
                 FROM messages, users 
-                WHERE messages.uid = users.user_id AND messages.msg_id = $parent_id";
+                WHERE messages.msg_id = $parent_id AND messages.uid = users.user_id";
 $res=$conn->prepare($sql_select);
 $res->execute();
 ?>
