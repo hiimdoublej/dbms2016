@@ -1,6 +1,17 @@
 <?php
 date_default_timezone_set("Asia/Taipei");
 include_once 'header.php';
+
+if(isset($_GET["m_id"]))
+{
+  $parent_id = $_GET["m_id"];
+  $_SESSION['m_id'] = $parent_id;
+}
+else
+{
+  $parent_id = $_SESSION['m_id'];
+}
+
 if(isset($_POST["delete_msg"]))//deleting message part
 {
     if($_POST["delete_msg"]=="delete")
@@ -50,7 +61,6 @@ if(isset($_POST["delete_cmt"]))//deleting comments/replies part
 }
 echo "<br>";
 
-$parent_id = $_GET["m_id"];
 if(isset($_POST['submit_comment']))
 {
     if($_POST['comment']!='')
@@ -185,9 +195,8 @@ else
 ?>
 <form action="comment.php" method="POST">
     <input type="hidden" name="submit_comment" value="1" />
-    <?php echo "<input type='hidden' name='view_reply_parent' value=".$_SESSION['view_reply_parent'].">"; ?>
+    <?php echo "<input type='hidden' name='m_id' value=".$parent_id.">"; ?>
     <textarea name="comment" id = 'msg'></textarea><br />
     <button type="submit" id ='msg_submit'>Submit reply to this message</button>
-</form>
 <br>
 <a href="home.php" id="back_to_home">Go Back</a>
