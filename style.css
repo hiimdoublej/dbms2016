@@ -6,6 +6,9 @@
  margin:0;
  padding:0;
 }
+button{
+  cursor: pointer;
+}
 #login-form
 {
  margin-top:70px;
@@ -129,15 +132,17 @@ textarea#msg{
 	height: 120px;
 	border: 3px solid #cccccc;
 	padding: 5px;
+  font-size: 18px;
 	font-family: Tahoma, sans-serif;
 	background-position: bottom right;
 	background-repeat: no-repeat;
 	resize : none;
 }
 textarea#msg_search_box{
+  font-size: 18px;
   margin-left:40px;
   width: 40%;
-  height: 20px;
+  height: 25px;
   border: 3px solid #cccccc;
   padding: 5px;
   font-family: Tahoma, sans-serif;
@@ -145,6 +150,21 @@ textarea#msg_search_box{
   background-repeat: no-repeat;
   resize : none;
 }
+
+input#msg_search_box{
+  font-size: 18px;
+  margin-left:40px;
+  margin-bottom: 20px;
+  width: 40%;
+  height: 25px;
+  border: 3px solid #cccccc;
+  padding: 5px;
+  font-family: Tahoma, sans-serif;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  resize : none;
+}
+
 button#msg_submit{
 border: 2px solid #fafafa;
 width: 40%;
@@ -164,9 +184,8 @@ margin-top: 10px;
 button#msg_search{
   border: 2px solid #fafafa;
   position: relative;
-  top:-12px;
  width:20%;
- height:35px;
+ height:40px;
  background:#3e94ec;
  background:-moz-linear-gradient(top, #595959 , #515151);
  color:#f9f9f9;
@@ -175,19 +194,26 @@ button#msg_search{
  font-weight:bolder;
  text-transform:uppercase;
 }
-button#view_replies
+tr button
 {
+  text-align: left;
+  width: 100%;
+  height: 100%;
   border:0;
   font-size: 25px;
   color:#4e5066;
   background: transparent;
 }
-button#view_replies:hover
+tr:hover button
 {
   border:0;
   font-size: 25px;
   color:#fafafa;
   background: transparent;
+}
+tr:hover img 
+{
+    -webkit-filter: invert(100%);
 }
 /* css for home page */
 
@@ -278,7 +304,7 @@ th:last-child {
   
 tr {
   border-top: 1px solid #C1C3D1;
-  border-bottom-: 1px solid #C1C3D1;
+  border-bottom: 1px solid #C1C3D1;
   color:#666B85;
   font-size:16px;
   font-weight:normal;
@@ -289,7 +315,6 @@ tr:hover td {
   background:#4E5066;
   color:#FFFFFF;
   border-top: 1px solid #22262e;
-  border-bottom: 1px solid #22262e;
 }
  
 tr:first-child {
@@ -327,7 +352,6 @@ td {
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
   word-break:break-all;
-  max-width: 70px;
 }
 td#actions
 {
@@ -361,17 +385,7 @@ td.text-center {
 td.text-right {
   text-align: right;
 }
-img.invert:hover {  
-    filter: invert(100%);
-    -webkit-filter: invert(100%);
-    -moz-filter: invert(100%);
-    -o-filter: invert(100%);
-    -ms-filter: invert(100%);
-}
-button#del_btn
-{
-  background-color: transparent;
-}
+
 a#back_to_home
 {
    margin-left: 45px;

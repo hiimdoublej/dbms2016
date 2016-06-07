@@ -38,7 +38,7 @@ if(isset($_POST["delete_action"]))//deleting message part
 
 <form action="search.php" method="POST">
     <input type="hidden" name="search_submit" value="1" />
-    <textarea name="message_target" id = 'msg_search_box'></textarea>
+    <input name="message_target" id = 'msg_search_box'></textarea>
         <button type="submit" id ='msg_search'>Search for message</button>
     <br />
 </form>
@@ -62,7 +62,7 @@ if(count($result) > 0)
     <?php
     while($row=$result->fetch(PDO::FETCH_OBJ))
     {
-    	echo "<tr><td>".$row -> msg."</td>";
+    	echo "<tr><td>".nl2br($row -> msg)."</td>";
         echo "<td>".$row -> username."</td>";
     	echo "<td>".$row -> msg_time."</td>";
         if($userRow['user_id']==$row->uid)
@@ -73,7 +73,7 @@ if(count($result) > 0)
                 <button type="submit" id="del_btn" name="delete_action" value ="delete" 
                 style="border:0;background transparent;" 
                 onclick="return confirm('Delete this message?')"/>
-                <img style ="width:30px;height:30px;"src="delete.png" class = "invert" title = "Delete This Message" alt="submit" />
+                <img style ="width:100%;height:100%;"src="delete.png" class = "invert" title = "Delete This Message" alt="submit" />
                 <?php
                 echo "<input type='hidden' name='del_msg_id' value=".$row->msg_id.">"
                 ?>

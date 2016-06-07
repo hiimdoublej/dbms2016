@@ -110,7 +110,7 @@ $res->execute();
     <?php
     while($row=$res->fetch(PDO::FETCH_OBJ))
     {
-        echo "<tr><td>".$row -> msg."</td>";
+        echo "<tr><td>".nl2br($row -> msg)."</td>";
         echo "<td>".$row -> username."</td>";
         echo "<td>".$row -> msg_time."</td>";
         if($_SESSION['user']==$row->uid)
@@ -158,14 +158,14 @@ if($res->rowCount()!=0)
     <?php
     while($row=$res->fetch(PDO::FETCH_OBJ))
     {
-        echo "<tr><td>".$row -> cmt."</td>";
+        echo "<tr><td>".nl2br($row -> cmt)."</td>";
         echo "<td>".$row -> username."</td>";
         echo "<td>".$row -> cmt_time."</td>";
         if($_SESSION['user']==$row->uid)
         {
             ?>
             <td id="actions">
-               <form action="comment.php" method="POST" >
+               <form action="" method="POST" >
                 <button type="submit" id="del_btn" name="delete_cmt" value ="delete" 
                 style="border:0;background transparent;" 
                 onclick="return confirm('Delete this reply?')"/>
@@ -193,7 +193,7 @@ else
     echo "</div>";
 }
 ?>
-<form action="comment.php" method="POST">
+<form action="" method="POST">
     <input type="hidden" name="submit_comment" value="1" />
     <?php echo "<input type='hidden' name='m_id' value=".$parent_id.">"; ?>
     <textarea name="comment" id = 'msg'></textarea><br />

@@ -22,14 +22,14 @@ if(isset($_POST['search_submit'])&$_POST['message_target']!='')
             echo "</div>";
         	?>
             <table class = "table-fill">
-            <tr><th>Message</th>
-            <th>By</th>
-            <th>Time</th>
+            <tr><th id="text">Message</th>
+            <th id="name">By</th>
+            <th id="time">Time</th>
             <th id="actions">Delete</th>
             <?php
             while($row=$stmt->fetch(PDO::FETCH_OBJ))
             {
-            	echo "<tr><td>".$row -> msg."</td>";
+            	echo "<tr><td>".nl2br($row -> msg)."</td>";
                 echo "<td>".$row -> username."</td>";
             	echo "<td>".$row -> msg_time."</td>";
                     if($_SESSION['user']==$row->uid)
@@ -47,15 +47,15 @@ if(isset($_POST['search_submit'])&$_POST['message_target']!='')
                             </form>
                             </a>
                         </td>
-                    </tr>
                         <?php
                     }
                     else 
                     {
-                        echo "<td></td></tr>";
+                        echo "<td></td>";
                     }
+                    echo"</tr>";
             }
-            echo "</table>";
+            echo "</table><br>";
         }
         else
         {
