@@ -5,7 +5,6 @@ if(!isset($_SESSION['user']))
 {
  header("Location: index.php");
 }
-
 $sql_select = "SELECT * FROM users WHERE user_id=".$_SESSION['user'];
 $res=$conn->query($sql_select);
 $userRow=$res->fetch(PDO::FETCH_BOTH);
