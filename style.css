@@ -50,6 +50,7 @@ table tr td button#login
  font-size:18px;
  font-weight:bolder;
  text-transform:uppercase;
+ text-align: center;
 }
 
 button#signup
